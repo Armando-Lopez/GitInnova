@@ -1,9 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 
-const RegisterForm = () => {
+const RegisterForm = ({ onRegister }) => {
   const { register, errors, handleSubmit } = useForm();
   const save = (data) => {
+    onRegister(data);
     console.log(data);
   };
   return (
@@ -90,15 +91,15 @@ const RegisterForm = () => {
           <div className="row">
             <div className="input-field col s12">
               <input
-                name="github-user"
-                id="github-user"
+                name="github_user"
+                id="github_user"
                 type="text"
                 className="validate"
                 ref={register({
                   required: { value: true, message: "Campo requerido" },
                 })}
               />
-              <label htmlFor="github-user">Usuario de GitHub</label>
+              <label htmlFor="github_user">Usuario de GitHub</label>
             </div>
           </div>
 
