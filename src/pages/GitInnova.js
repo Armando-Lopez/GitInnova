@@ -1,10 +1,12 @@
 import React from "react";
 import RegisterForm from "../components/RegisterForm";
-import Welcome from "../components/Welcome";
+import Header from "../components/Header";
+import "materialize-css";
+
 const GitInnova = () => {
   return (
     <main className="container section">
-      <Welcome />
+      <Header />
       <RegisterForm />
     </main>
   );
