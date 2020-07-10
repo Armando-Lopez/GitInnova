@@ -44,7 +44,7 @@ const RegisterForm = ({ onRegister }) => {
           </div>
 
           <div className="row">
-            <div className="input-field col s12">
+            <div className="input-field col s6">
               <input
                 name="cc"
                 id="cc"
@@ -56,10 +56,8 @@ const RegisterForm = ({ onRegister }) => {
               />
               <label htmlFor="cc">Cédula</label>
             </div>
-          </div>
 
-          <div className="row">
-            <div className="input-field col s12">
+            <div className="input-field col s6">
               <input
                 name="birthday"
                 id="birthday"
@@ -74,7 +72,7 @@ const RegisterForm = ({ onRegister }) => {
           </div>
 
           <div className="row">
-            <div className="input-field col s12">
+            <div className="input-field col s6">
               <input
                 name="email"
                 id="email"
@@ -86,10 +84,8 @@ const RegisterForm = ({ onRegister }) => {
               />
               <label htmlFor="email">Correo electrónico</label>
             </div>
-          </div>
 
-          <div className="row">
-            <div className="input-field col s12">
+            <div className="input-field col s6">
               <input
                 name="github_user"
                 id="github_user"

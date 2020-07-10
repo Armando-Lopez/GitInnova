@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Header = ({ candidate }) => {
+const Header = ({ candidate, isRegistring, setRegistring }) => {
   return (
     <div className="orange accent-1">
       <nav className="nav-extended orange  z-depth-2">
@@ -9,8 +9,10 @@ const Header = ({ candidate }) => {
             GitInnova
           </a>
         </div>
-        <div className="nav-content">
-          <p className="flow-text">Obten información de usuarios de Github</p>
+        <div className="nav-content center-align">
+          <p className="flow-text">
+            Obten información sobre repositorios de usuarios en Github
+          </p>
         </div>
 
         <div className="card-panel blue-grey-text darken-4">
@@ -31,12 +33,22 @@ const Header = ({ candidate }) => {
             </>
           ) : (
             <h5>
-              No has registraso ningun candidato. Presiona el botton de agregar
-              y comencemos
+              No has registrado ningún candidato. Presiona el botton de agregar
+              y comencemos.
             </h5>
           )}
-          <a className="btn-floating right btn-large orange darken-4 waves-effect waves-light teal">
-            <i className="material-icons">add</i>
+          <a
+            href="#1"
+            className="btn-floating right btn-large orange darken-4 waves-effect waves-light teal"
+            onClick={() => {
+              setRegistring(!isRegistring);
+            }}
+          >
+            {isRegistring ? (
+              <i className="material-icons">close</i>
+            ) : (
+              <i className="material-icons">add</i>
+            )}
           </a>
         </div>
       </nav>
