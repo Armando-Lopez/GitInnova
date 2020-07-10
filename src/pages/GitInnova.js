@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import RegisterForm from "../components/RegisterForm";
 import Pagination from "../components/Pagination";
 import ReposTable from "../components/ReposTable";
+import Sorter from "../components/Sorter";
 
 const GitInnova = () => {
   const [isRegistring, setRegistring] = useState(false);
@@ -37,10 +38,53 @@ const GitInnova = () => {
   };
 
   const getCandidateRepos = async (github_user) => {
-    const res = await Axios.get(
-      `https://api.github.com/users/${github_user}/repos`
-    );
-    setRepos(res.data);
+    const localrepos = window.localStorage.getItem("localrepos");
+
+    if (localrepos) {
+      setRepos(JSON.parse(localrepos));
+    } else {
+      const res = await Axios.get(
+        `https://api.github.com/users/${github_user}/repos`
+      );
+      const filteredFromApi = res.data.map((repo) => {
+        return {
+          name: repo.name,
+          language: repo.language,
+          default_branch: repo.default_branch,
+          git_url: repo.git_url,
+          description: repo.description,
+        };
+      });
+      setRepos(filteredFromApi);
+      window.localStorage.setItem(
+        "localrepos",
+        JSON.stringify(filteredFromApi)
+      );
+    }
+  };
+
+  const sort = (e) => {
+    const value = e.target.value;
+
+    const localrepos = JSON.parse(window.localStorage.getItem("localrepos"));
+
+    const sorted = localrepos.sort((a, b) => {
+      if (!a[value] || !b[value]) {
+        return 0;
+      }
+      let A = a[value].toLowerCase();
+      let B = b[value].toLowerCase();
+
+      if (A < B) {
+        return -1;
+      }
+      if (A > B) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setRepos(sorted);
   };
 
   return (
@@ -52,28 +96,39 @@ const GitInnova = () => {
       />
 
       {isRegistring && <RegisterForm onRegister={onRegister} />}
-
-      {candidateRepos.length > 0 ? (
-        <div className="card-panel">
+      <div className="card-panel row">
+        <div className="col s12">
           <h5 className="center-align">Repositorios</h5>
-
-          <Pagination
-            reposLength={candidateRepos.length}
-            reposPerPage={reposPerPage}
-            currentPage={page}
-          />
-
-          <ReposTable
-            candidateRepos={candidateRepos}
-            reposPerPage={reposPerPage}
-            currentPage={page}
-          />
         </div>
-      ) : (
-        <h5 className="center-align">
-          No se encontraron repositorios del candidato
-        </h5>
-      )}
+
+        {candidateRepos.length > 0 ? (
+          <>
+            <div className="col s6">
+              <Sorter onSort={sort} />
+            </div>
+
+            <div className="col s12">
+              <Pagination
+                reposLength={candidateRepos.length}
+                reposPerPage={reposPerPage}
+                currentPage={page}
+              />
+            </div>
+
+            <div className="col s12">
+              <ReposTable
+                candidateRepos={candidateRepos}
+                reposPerPage={reposPerPage}
+                currentPage={page}
+              />
+            </div>
+          </>
+        ) : (
+          <h5 className="center-align">
+            No se encontraron repositorios del candidato
+          </h5>
+        )}
+      </div>
     </main>
   );
 };
