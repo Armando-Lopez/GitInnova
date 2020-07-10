@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 const ReposTable = ({ candidateRepos, reposPerPage, currentPage }) => {
   const reposFrom = reposPerPage * currentPage - reposPerPage;
@@ -8,7 +8,10 @@ const ReposTable = ({ candidateRepos, reposPerPage, currentPage }) => {
   return (
     <div className="row">
       <div className="col s12">
-        <table className="responsive-table centered striped orange accent-1 card z-depth-3 blue-grey-text">
+        <table
+          className="responsive-table centered striped orange accent-1 card"
+          style={{ color: "#835632" }}
+        >
           <thead>
             <tr>
               <th>Nombre</th>

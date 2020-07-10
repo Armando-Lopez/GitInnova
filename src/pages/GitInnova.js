@@ -6,6 +6,7 @@ import RegisterForm from "../components/RegisterForm";
 import Pagination from "../components/Pagination";
 import ReposTable from "../components/ReposTable";
 import Sorter from "../components/Sorter";
+import Search from "../components/Search";
 
 const GitInnova = () => {
   const [isRegistring, setRegistring] = useState(false);
@@ -55,16 +56,19 @@ const GitInnova = () => {
           description: repo.description,
         };
       });
+
       setRepos(filteredFromApi);
       window.localStorage.setItem(
         "localrepos",
         JSON.stringify(filteredFromApi)
       );
     }
+
+    setRegistring(false);
   };
 
   const sort = (e) => {
-    const value = e.target.value;
+    const value = e.target.value.toLowerCase().trim();
 
     const localrepos = JSON.parse(window.localStorage.getItem("localrepos"));
 
@@ -87,6 +91,20 @@ const GitInnova = () => {
     setRepos(sorted);
   };
 
+  const search = (e) => {
+    const value = e.target.value.toLowerCase().trim();
+    const localrepos = JSON.parse(window.localStorage.getItem("localrepos"));
+    if (value.length >= 3) {
+      const found = localrepos.filter((repo) =>
+        repo.name.toLowerCase().includes(value)
+      );
+
+      setRepos(found);
+    } else {
+      setRepos(localrepos);
+    }
+  };
+
   return (
     <main className="container section">
       <Header
@@ -96,38 +114,35 @@ const GitInnova = () => {
       />
 
       {isRegistring && <RegisterForm onRegister={onRegister} />}
+
       <div className="card-panel row">
         <div className="col s12">
           <h5 className="center-align">Repositorios</h5>
         </div>
 
-        {candidateRepos.length > 0 ? (
-          <>
-            <div className="col s6">
-              <Sorter onSort={sort} />
-            </div>
+        <div className="col s6">
+          <Sorter onSort={sort} />
+        </div>
 
-            <div className="col s12">
-              <Pagination
-                reposLength={candidateRepos.length}
-                reposPerPage={reposPerPage}
-                currentPage={page}
-              />
-            </div>
+        <div className="col s6">
+          <Search onSearch={search} />
+        </div>
 
-            <div className="col s12">
-              <ReposTable
-                candidateRepos={candidateRepos}
-                reposPerPage={reposPerPage}
-                currentPage={page}
-              />
-            </div>
-          </>
-        ) : (
-          <h5 className="center-align">
-            No se encontraron repositorios del candidato
-          </h5>
-        )}
+        <div className="col s12">
+          <Pagination
+            reposLength={candidateRepos.length}
+            reposPerPage={reposPerPage}
+            currentPage={page}
+          />
+        </div>
+
+        <div className="col s12">
+          <ReposTable
+            candidateRepos={candidateRepos}
+            reposPerPage={reposPerPage}
+            currentPage={page}
+          />
+        </div>
       </div>
     </main>
   );

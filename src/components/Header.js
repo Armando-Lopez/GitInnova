@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const Header = ({ candidate, isRegistring, setRegistring }) => {
   return (
