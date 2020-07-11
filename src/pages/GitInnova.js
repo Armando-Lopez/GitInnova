@@ -109,7 +109,7 @@ const GitInnova = () => {
       const found = localrepos.filter((repo) =>
         repo.name.toLowerCase().includes(value)
       );
-
+      window.location.hash = 1;
       setRepos(found);
     } else {
       setRepos(localrepos);
