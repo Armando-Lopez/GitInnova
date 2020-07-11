@@ -45,15 +45,12 @@ const GitInnova = () => {
 
     if (localrepos) {
       setRepos(JSON.parse(localrepos));
-      console.log("local");
     } else {
-      console.log("API");
       const res = await Axios.get(
         `https://api.github.com/users/${github_user}/repos`
       );
 
       if (res.data) {
-        console.log("data");
         const filteredFromApi = res.data.map((repo) => {
           return {
             name: repo.name,

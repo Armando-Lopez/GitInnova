@@ -23,13 +23,10 @@ const RegisterForm = ({ onRegister }) => {
       helperText.innerText = "";
       setCanSave(true);
     }
-
-    console.log(currentYear - year);
   };
 
   const save = (data) => {
     onRegister(data);
-    console.log(data);
   };
 
   return (

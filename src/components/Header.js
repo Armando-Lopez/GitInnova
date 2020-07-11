@@ -15,21 +15,17 @@ const Header = ({ candidate, isRegistring, setRegistring }) => {
           </p>
         </div>
 
-        <div className="card-panel blue-grey-text darken-4">
+        <div className="card-panel" style={{ color: "#835632" }}>
           {candidate ? (
             <>
-              <ul className="collection with-header">
-                <li className="collection-header">
-                  <h5>{candidate.first_name + " " + candidate.last_name}</h5>
-                </li>
-                <br />
-                <li className="collection-item chip">{candidate.cc}</li>
-                <li className="collection-item chip">{candidate.birthday}</li>
-                <li className="collection-item chip">{candidate.email}</li>
-                <li className="collection-item chip">
-                  {candidate.github_user}
-                </li>
-              </ul>
+              <span className="chip">
+                {candidate.first_name + " " + candidate.last_name}
+              </span>
+
+              <span className="chip">{candidate.cc}</span>
+              <span className="chip">{candidate.birthday}</span>
+              <span className="chip">{candidate.email}</span>
+              <span className="chip">{candidate.github_user}</span>
             </>
           ) : (
             <h5>
