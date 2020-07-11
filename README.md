@@ -1,4 +1,4 @@
-EndPoint (https://gitinnova.vercel.app/)[https://gitinnova.vercel.app/]
+EndPoint https://gitinnova.vercel.app/
 
 # GitInnova
 
