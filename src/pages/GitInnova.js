@@ -20,6 +20,7 @@ const GitInnova = () => {
   useEffect(() => {
     let localCandidate = window.localStorage.getItem("candidate");
     if (localCandidate) {
+      setHasRepos(true);
       setCandidate(JSON.parse(localCandidate));
       getCandidateRepos(JSON.parse(localCandidate).github_user);
     }
