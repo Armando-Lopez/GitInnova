@@ -40,6 +40,7 @@ const Header = ({ candidate, isRegistring, setRegistring }) => {
           <a
             href="#1"
             className="btn-floating right btn-large orange darken-4 waves-effect waves-light teal"
+            style={{ cursor: "pointer" }}
             onClick={() => {
               setRegistring(!isRegistring);
             }}

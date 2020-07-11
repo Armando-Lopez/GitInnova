@@ -12,6 +12,7 @@ const GitInnova = () => {
   const [isRegistring, setRegistring] = useState(false);
 
   const [candidate, setCandidate] = useState(undefined);
+  const [hasRepos, setHasRepos] = useState(false);
   const [candidateRepos, setRepos] = useState([]);
   const [page, setPage] = useState(1);
   const reposPerPage = 5;
@@ -43,25 +44,32 @@ const GitInnova = () => {
 
     if (localrepos) {
       setRepos(JSON.parse(localrepos));
+      console.log("local");
     } else {
+      console.log("API");
       const res = await Axios.get(
         `https://api.github.com/users/${github_user}/repos`
       );
-      const filteredFromApi = res.data.map((repo) => {
-        return {
-          name: repo.name,
-          language: repo.language,
-          default_branch: repo.default_branch,
-          git_url: repo.git_url,
-          description: repo.description,
-        };
-      });
 
-      setRepos(filteredFromApi);
-      window.localStorage.setItem(
-        "localrepos",
-        JSON.stringify(filteredFromApi)
-      );
+      if (res.data) {
+        console.log("data");
+        const filteredFromApi = res.data.map((repo) => {
+          return {
+            name: repo.name,
+            language: repo.language,
+            default_branch: repo.default_branch,
+            git_url: repo.git_url,
+            description: repo.description,
+          };
+        });
+
+        setRepos(filteredFromApi);
+        window.localStorage.setItem(
+          "localrepos",
+          JSON.stringify(filteredFromApi)
+        );
+        setHasRepos(true);
+      }
     }
 
     setRegistring(false);
@@ -72,23 +80,25 @@ const GitInnova = () => {
 
     const localrepos = JSON.parse(window.localStorage.getItem("localrepos"));
 
-    const sorted = localrepos.sort((a, b) => {
-      if (!a[value] || !b[value]) {
+    if (localrepos) {
+      const sorted = localrepos.sort((a, b) => {
+        if (!a[value] || !b[value]) {
+          return 0;
+        }
+        let A = a[value].toLowerCase();
+        let B = b[value].toLowerCase();
+
+        if (A < B) {
+          return -1;
+        }
+        if (A > B) {
+          return 1;
+        }
         return 0;
-      }
-      let A = a[value].toLowerCase();
-      let B = b[value].toLowerCase();
+      });
 
-      if (A < B) {
-        return -1;
-      }
-      if (A > B) {
-        return 1;
-      }
-      return 0;
-    });
-
-    setRepos(sorted);
+      setRepos(sorted);
+    }
   };
 
   const search = (e) => {
@@ -120,21 +130,33 @@ const GitInnova = () => {
           <h5 className="center-align">Repositorios</h5>
         </div>
 
-        <div className="col s6">
-          <Sorter onSort={sort} />
-        </div>
+        {hasRepos ? (
+          <>
+            <div className="col s6">
+              <Sorter onSort={sort} />
+            </div>
 
-        <div className="col s6">
-          <Search onSearch={search} />
-        </div>
+            <div className="col s6">
+              <Search onSearch={search} />
+            </div>
 
-        <div className="col s12">
-          <Pagination
-            reposLength={candidateRepos.length}
-            reposPerPage={reposPerPage}
-            currentPage={page}
-          />
-        </div>
+            <div className="col s12">
+              <Pagination
+                reposLength={candidateRepos.length}
+                reposPerPage={reposPerPage}
+                currentPage={page}
+              />
+            </div>
+          </>
+        ) : candidate ? (
+          <h6 className="center-align">
+            No se contraron Repositorios del candidato ingresado
+          </h6>
+        ) : (
+          <h6 className="center-align">
+            Registra candidato para ver Repositorios
+          </h6>
+        )}
 
         <div className="col s12">
           <ReposTable
